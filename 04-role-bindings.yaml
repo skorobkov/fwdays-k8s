@@ -1,0 +1,125 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: fwdays:rw-own-ns
+  namespace: mentor
+subjects:
+  - kind: ServiceAccount
+    name: mentor
+    namespace: mentor
+roleRef:
+  kind: ClusterRole
+  name: fwdays:rw-role
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: fwdays:rw-own-ns
+  namespace: student01
+subjects:
+  - kind: ServiceAccount
+    name: student01
+    namespace: student01
+roleRef:
+  kind: ClusterRole
+  name: fwdays:rw-role
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: fwdays:rw-own-ns
+  namespace: student02
+subjects:
+  - kind: ServiceAccount
+    name: student02
+    namespace: student02
+roleRef:
+  kind: ClusterRole
+  name: fwdays:rw-role
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: fwdays:rw-own-ns
+  namespace: student03
+subjects:
+  - kind: ServiceAccount
+    name: student03
+    namespace: student03
+roleRef:
+  kind: ClusterRole
+  name: fwdays:rw-role
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: fwdays:custom-rw-access
+  namespace: student01
+subjects:
+  - kind: ServiceAccount
+    name: mentor
+    namespace: mentor
+roleRef:
+  kind: ClusterRole
+  name: fwdays:rw-role
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: fwdays:custom-rw-access
+  namespace: student02
+subjects:
+  - kind: ServiceAccount
+    name: mentor
+    namespace: mentor
+roleRef:
+  kind: ClusterRole
+  name: fwdays:rw-role
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: fwdays:custom-rw-access
+  namespace: student03
+subjects:
+  - kind: ServiceAccount
+    name: mentor
+    namespace: mentor
+roleRef:
+  kind: ClusterRole
+  name: fwdays:rw-role
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: fwdays:custom-ro-access
+  namespace: student01
+subjects:
+  - kind: ServiceAccount
+    name: student02
+    namespace: student02
+roleRef:
+  kind: ClusterRole
+  name: fwdays:read-role
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: fwdays:custom-ro-access
+  namespace: default
+subjects:
+  - kind: ServiceAccount
+    name: student02
+    namespace: student02
+roleRef:
+  kind: ClusterRole
+  name: fwdays:read-role
