@@ -1,0 +1,31 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: fwdays:read-role
+  labels:
+    rbac-aggregate-to-fwdays-rw-role: "true"
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "services", "configmaps"]
+    verbs: ["get", "watch", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: fwdays:write-role
+  labels:
+    rbac-aggregate-to-fwdays-rw-role: "true"
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "services", "configmaps"]
+    verbs: ["create", "patch", "delete", "update"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: fwdays:rw-role
+aggregationRule:
+  clusterRoleSelectors:
+    - matchLabels:
+        rbac-aggregate-to-fwdays-rw-role: "true"
