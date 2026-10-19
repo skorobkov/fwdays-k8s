@@ -1,3 +1,5 @@
+.PHONY: istio-install istio-admission
+
 all: istio-install istio-admission
 
 istio-install:
