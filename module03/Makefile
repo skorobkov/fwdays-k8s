@@ -1,8 +1,4 @@
-GITOPS_REPO = 
-
-all: argocd
-
-argocd: argocd-install argocd-gitops-repo
+all: argocd-install argocd-deploy
 
 argocd-install:
 	kubectl create namespace argocd || true
