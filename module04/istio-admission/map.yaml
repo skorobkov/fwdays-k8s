@@ -1,1 +1,26 @@
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingAdmissionPolicy
+metadata:
+  name: "fwdays-istio-sidecar-map"
+spec:
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+  reinvocationPolicy: IfNeeded
+  mutations:
+    - patchType: "ApplyConfiguration"
+      applyConfiguration:
+        expression: >
+          Object{}
 
+---
+# apiVersion: admissionregistration.k8s.io/v1
+# kind: MutatingAdmissionPolicyBinding
+# metadata:
+#   name: fwdays-istio-sidecar-map-binding
+# spec:
+#   policyName: fwdays-istio-sidecar-map
