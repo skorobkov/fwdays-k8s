@@ -1,0 +1,23 @@
+users:
+  mentor:
+    writeNamespaces:
+      - student01
+      - student02
+      - student03-custom
+  student01: {}
+  student02:
+    readNamespaces:
+      - default
+      - student01
+  student03:
+    namespace: student03-custom
+
+readRoleRules:
+  - apiGroups: [""]
+    resources: ["pods", "services", "configmaps"]
+    verbs: ["get", "watch", "list"]
+
+writeRoleRules:
+  - apiGroups: [""]
+    resources: ["pods", "services", "configmaps"]
+    verbs: ["create", "patch", "delete", "update"]

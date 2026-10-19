@@ -1,0 +1,40 @@
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingAdmissionPolicy
+metadata:
+  name: "fwdays-map"
+spec:
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+  variables:
+    - name: person
+      expression: >
+        namespaceObject.metadata.name.matches('^mentor$') ? 'mentor' :
+        namespaceObject.metadata.name.matches('^student[0-9]+$') ? 'student' :
+        ''
+  reinvocationPolicy: IfNeeded
+  mutations:
+    - patchType: "ApplyConfiguration"
+      applyConfiguration:
+        expression: >
+          variables.person != ''
+            ? Object{ metadata: Object.metadata{ labels: { "person": variables.person } } }
+            : Object{}
+    - patchType: "JSONPatch"
+      jsonPatch:
+        expression: >
+          variables.person == '' && has(object.metadata.labels) && has(object.metadata.labels.person)
+            ? [JSONPatch{op: "remove", path: "/metadata/labels/person"} ]
+            : []
+
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingAdmissionPolicyBinding
+metadata:
+  name: fwdays-map-binding
+spec:
+  policyName: fwdays-map
