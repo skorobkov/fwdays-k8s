@@ -11,9 +11,9 @@ spec:
     targetRevision: 1.31.2
     helm:
       releaseName: istio-base
-      namespace: istio-system
   destination:
     name: in-cluster
+    namespace: istio-system
   syncPolicy:
     automated:
       enabled: true
