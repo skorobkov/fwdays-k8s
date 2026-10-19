@@ -1,0 +1,7 @@
+{{- range $k, $v := .Values.users }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ $v.namespace | default $k }}
+{{- end }}

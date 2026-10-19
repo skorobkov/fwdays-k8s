@@ -1,0 +1,45 @@
+{{- range $k, $v := .Values.users }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: fwdays:rw-own-ns
+  namespace: {{ $v.namespace | default $k }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ $k }}
+    namespace: {{ $v.namespace | default $k }}
+roleRef:
+  kind: ClusterRole
+  name: fwdays:rw-role
+{{- range $_, $ns := $v.writeNamespaces }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: fwdays:custom-rw-access-{{ $k }}
+  namespace: {{ $ns }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ $k }}
+    namespace: {{ $v.namespace | default $k }}
+roleRef:
+  kind: ClusterRole
+  name: fwdays:rw-role
+{{- end }}
+{{- range $_, $ns := $v.readNamespaces }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: fwdays:custom-ro-access-{{ $k }}
+  namespace: {{ $ns }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ $k }}
+    namespace: {{ $v.namespace | default $k }}
+roleRef:
+  kind: ClusterRole
+  name: fwdays:ro-role
+{{- end }}
+{{- end }}

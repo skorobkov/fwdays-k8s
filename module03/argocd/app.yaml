@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: module02
+  namespace: argocd
+  labels:
+    name: module02
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/skorobkov/fwdays-k8s.git
+    targetRevision: module03
+    path: module03/helm-charts/module02
+  destination:
+    name: in-cluster
