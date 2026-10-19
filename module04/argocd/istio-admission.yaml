@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: istio-admission
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/skorobkov/fwdays-k8s.git
+    targetRevision: module04
+    path: module04/istio-admission
+  destination:
+    name: in-cluster
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true

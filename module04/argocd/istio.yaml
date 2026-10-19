@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: module04
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://blob.istio.io/istio-release/charts
+    chart: base
+    targetRevision: 1.31.2
+    helm:
+      releaseName: istio-base
+  destination:
+    name: in-cluster
