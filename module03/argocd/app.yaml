@@ -13,3 +13,8 @@ spec:
     path: module03/helm-charts/module02
   destination:
     name: in-cluster
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
