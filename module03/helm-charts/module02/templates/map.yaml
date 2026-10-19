@@ -2,7 +2,7 @@
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingAdmissionPolicy
 metadata:
-  name: "fwdays-pod-label-policy"
+  name: "fwdays-map"
 spec:
   matchConstraints:
     resourceRules:
@@ -35,6 +35,6 @@ spec:
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingAdmissionPolicyBinding
 metadata:
-  name: fwdays-pod-label-policy-binding
+  name: fwdays-map-binding
 spec:
-  policyName: fwdays-pod-label-policy
+  policyName: fwdays-map
