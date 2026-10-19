@@ -40,6 +40,6 @@ subjects:
     namespace: {{ $v.namespace | default $k }}
 roleRef:
   kind: ClusterRole
-  name: fwdays:ro-role
+  name: fwdays:read-role
 {{- end }}
 {{- end }}
