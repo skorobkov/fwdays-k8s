@@ -1,26 +1,27 @@
----
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingAdmissionPolicy
 metadata:
-  name: "fwdays-istio-sidecar-map"
+  name: fwdays-istio-inject-pod
 spec:
+  failurePolicy: Fail
+  reinvocationPolicy: IfNeeded
   matchConstraints:
     resourceRules:
       - apiGroups: [""]
         apiVersions: ["v1"]
         operations: ["CREATE", "UPDATE"]
         resources: ["pods"]
-  reinvocationPolicy: IfNeeded
+    objectSelector:
+      matchLabels:
+        person: student
   mutations:
-    - patchType: "ApplyConfiguration"
+    - patchType: ApplyConfiguration
       applyConfiguration:
-        expression: >
-          Object{}
-
+        expression: "Object{metadata: Object.metadata{labels: {'sidecar.istio.io/inject': 'true'}}}"
 ---
-# apiVersion: admissionregistration.k8s.io/v1
-# kind: MutatingAdmissionPolicyBinding
-# metadata:
-#   name: fwdays-istio-sidecar-map-binding
-# spec:
-#   policyName: fwdays-istio-sidecar-map
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingAdmissionPolicyBinding
+metadata:
+  name: fwdays-istio-inject-pod
+spec:
+  policyName: fwdays-istio-inject-pod
