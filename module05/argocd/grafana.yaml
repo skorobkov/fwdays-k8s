@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    name: in-cluster
+    namespace: k8s-monitoring
+  project: default
+  source:
+    repoURL: https://grafana-community.github.io/helm-charts
+    chart: grafana
+    targetRevision: 14.0.1
+    helm:
+      releaseName: grafana
+      valuesObject: {}
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
