@@ -16,7 +16,55 @@ spec:
     targetRevision: 14.0.1
     helm:
       releaseName: grafana
-      valuesObject: {}
+      valuesObject:
+        extraInitContainers:
+          - name: k8s-mixin
+            image: docker.io/curlimages/curl:8.23.0
+            command:
+              - sh
+              - -c
+              - |
+                set -eu
+                d=/var/lib/grafana/dashboards/mixin
+                mkdir -p $d
+                curl -sSLf -o /var/lib/grafana/mixin.zip https://github.com/kubernetes-sigs/kubernetes-mixin/releases/download/version-1.5.6/kubernetes-mixin-version-1.5.6.zip
+                busybox unzip -o -j /var/lib/grafana/mixin.zip 'dashboards_out/*.json' -d $d
+                rm /var/lib/grafana/mixin.zip
+            volumeMounts:
+              - name: storage
+                mountPath: /var/lib/grafana
+        datasources:
+          datasources.yaml:
+            apiVersion: 1
+            datasources:
+              - name: Prometheus
+                type: prometheus
+                url: http://prometheus-server
+                access: proxy
+                isDefault: true
+                jsonData:
+                  timeInterval: 1m
+              - name: Loki
+                type: loki
+                url: http://loki-gateway
+                access: proxy
+        dashboards:
+          default:
+            node-exporter:
+              url: https://raw.githubusercontent.com/rfmoz/grafana-dashboards/refs/heads/master/prometheus/node-exporter-full.json
+              curlOptions: -Lf
+        dashboardProviders:
+          dashboardproviders.yaml:
+            apiVersion: 1
+            providers:
+              - name: default
+                type: file
+                options:
+                  path: /var/lib/grafana/dashboards/default
+              - name: mixin
+                type: file
+                options:
+                  path: /var/lib/grafana/dashboards/mixin
   syncPolicy:
     automated:
       enabled: true
