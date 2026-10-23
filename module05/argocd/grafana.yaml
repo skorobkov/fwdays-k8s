@@ -53,6 +53,9 @@ spec:
             node-exporter:
               url: https://raw.githubusercontent.com/rfmoz/grafana-dashboards/refs/heads/master/prometheus/node-exporter-full.json
               curlOptions: -Lf
+            vap:
+              url: https://raw.githubusercontent.com/skorobkov/fwdays-k8s/refs/heads/module05/module05/grafana/dashboards/vap.json
+              curlOptions: -Lf
         dashboardProviders:
           dashboardproviders.yaml:
             apiVersion: 1
