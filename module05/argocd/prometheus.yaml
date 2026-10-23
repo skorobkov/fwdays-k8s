@@ -55,19 +55,12 @@ spec:
                     expr: |
                       sum by (policy, policy_binding, enforcement_action) (
                         increase(apiserver_validating_admission_policy_check_total{policy="fwdays-read-only-root-fs", enforcement_action!="allow"}[5m])
-                        or
-                        (
-                          apiserver_validating_admission_policy_check_total{policy="fwdays-read-only-root-fs", enforcement_action!="allow"}
-                          unless
-                          apiserver_validating_admission_policy_check_total{policy="fwdays-read-only-root-fs", enforcement_action!="allow"} offset 5m
-                        )
                       ) > 0
                     labels:
                       severity: warning
                     annotations:
                       summary: "ValidatingAdmissionPolicy {{ $labels.policy }} спрацювала"
-                      description: 'Binding {{ $labels.policy_binding }}, action {{ $labels.enforcement_action }}. Деталі: дашборд Validating Admission Policies або {job="kube-audit"} |= `validation_failure` у Loki.'
-          # Userd for kube-state-metrics
+                      description: "Binding {{ $labels.policy_binding }}, action {{ $labels.enforcement_action }}"
           recording_rules.yml:
             "groups":
               - "interval": "3m"
