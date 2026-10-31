@@ -18,7 +18,7 @@ spec:
       releaseName: prometheus
       valuesObject:
         kube-state-metrics:
-          enalbed: true
+          enabled: true
         prometheus-node-exporter:
           enabled: true
         alertmanager:
